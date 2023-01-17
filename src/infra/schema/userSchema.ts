@@ -3,27 +3,41 @@ import { IUser } from '../../domain/models/user';
 
 const userSchema = new Schema<IUser>(
     {
-        // _id: {
-        //     type: Schema.Types.ObjectId,
-        //     required: true,
-        //     unique: true
-        // },
         firstName: {
             type: String,
-            unique: false,
+            required: true
         },
         lastName: {
             type: String,
-            unique: false,
+            required: true
         },
         email: {
             type: String,
-            unique: false,
+            unique: true,
+            required: true
         },
-        password: {
-            type: String,
-            unique: false,
+        phoneNumber: {
+            type: Number,
+            required: true
         },
+        address: {
+            zipCode: { type: Number, required: true},
+            city: { type: String, required: true },
+            country: { type: String, required: true }
+        },
+        createdAt: {
+            type: Date,
+            required: true,
+            default: new Date()
+        },
+        updatedAt: {
+            type: Date,
+            default: null
+        },
+        deletedAt: {
+            type: Date,
+            default: null
+        }
     },
     {
         collection: 'users',
