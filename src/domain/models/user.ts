@@ -13,6 +13,6 @@ export interface IUser extends Document {
     }
     createdAt: Date;
     updatedAt: Date;
-    deletedAt: Date;
+    // deletedAt: Date;
 }
 
