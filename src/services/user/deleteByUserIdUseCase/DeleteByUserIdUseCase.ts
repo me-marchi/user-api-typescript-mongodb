@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../../infra/repositories/userRepository.protocols';
+import { IUserRepository } from '../../../domain/data/userRepository.protocols';
 
 export class DeleteUserByIdUseCase {
     constructor(

@@ -1,5 +1,5 @@
-import { IUser } from '../models/user';
+import { User } from '../models/user';
 
 export interface FindAllUsers {
-  findAll(): Promise<IUser[]>;
+    findAll(): Promise<User[]>;
 }

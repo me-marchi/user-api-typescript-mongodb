@@ -1,5 +1,5 @@
-import { IUserRepository } from '../../../infra/repositories/userRepository.protocols';
-import { IUser } from '../../../domain/models/user';
+import { IUserRepository } from '../../../domain/data/userRepository.protocols';
+import { User } from '../../../domain/models/user';
 import { CreateUserDTO } from '../../../domain/useCases/createUser.protocols';
 
 export class CreateUserUseCase {
@@ -7,13 +7,13 @@ export class CreateUserUseCase {
         private readonly userRepository: Pick<IUserRepository, 'create'>
     ) {}
 
-    async create(userDTO: CreateUserDTO): Promise<IUser> {
+    async create(userDTO: CreateUserDTO): Promise<User> {
         const createdUser = await this.userRepository
         .create({ ...userDTO })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
             throw new Error('User not created');
         });
+
         return createdUser;
     }
 }

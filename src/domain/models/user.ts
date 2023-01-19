@@ -1,7 +1,5 @@
-import { Document, Types } from 'mongoose';
-
-export interface IUser extends Document {
-    _id: Types.ObjectId;
+export interface User {
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -13,6 +11,5 @@ export interface IUser extends Document {
     }
     createdAt: Date;
     updatedAt: Date;
-    // deletedAt: Date;
 }
 
