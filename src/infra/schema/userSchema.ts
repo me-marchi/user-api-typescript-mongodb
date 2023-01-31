@@ -16,11 +16,11 @@ const userSchema = new Schema<User>({
         required: true
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     address: {
-        zipCode: { type: Number, required: true},
+        zipCode: { type: String, required: true},
         city: { type: String, required: true },
         country: { type: String, required: true }
     },

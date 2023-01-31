@@ -3,9 +3,9 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
-    phoneNumber: number;
+    phoneNumber: string;
     address: {
-        zipCode: number;
+        zipCode: string;
         city: string;
         country: string;
     }

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { createUserFactory } from '../../services/user/createUserUseCase/createUserFactory';
-import { findAllUsersFactory } from '../../services/user/findAllUsersUseCase/findAllUsersFactory';
+import { findAllUsersWithFiltersFactory } from '../../services/user/findAllUsersUseCase/findAllUsersWithFiltersFactory';
 import { findByUserIdFactory } from '../../services/user/findByUserIdUseCase/findByUserIdFactory';
 import { updateByUserIdFactory } from '../../services/user/updateByUserIdUseCase/updateByUserIdFactory';
 import { deleteByUserIdFactory } from '../../services/user/deleteByUserIdUseCase/deleteByUserIdFactory';
@@ -25,8 +25,11 @@ export class UserController {
     
     static async findAll(request: Request, response: Response): Promise<Response> {
         try {
-            const useCase = findAllUsersFactory();
-            const foundUsers = await useCase.findAll().catch((error) => {
+            const { query } = request;
+
+            const useCase = findAllUsersWithFiltersFactory();
+            const foundUsers = await useCase.findAllWithFilters(query).catch((error) => {
+                console.log(error);
                 throw new Error(error);
             });
 

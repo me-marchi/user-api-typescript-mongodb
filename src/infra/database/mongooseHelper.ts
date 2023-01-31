@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export class MongooseHelper {
 
-    static async getConnection(): Promise<mongoose.Connection|void> {
+    static async getConnection(): Promise<void> {
         try {
             const uri = process.env.MONGODB_URI as string;
             

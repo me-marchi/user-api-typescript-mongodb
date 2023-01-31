@@ -1,6 +1,6 @@
 import { User } from '../../domain/models/user';
 import { UserModel } from '../schema/userSchema';
-import { IUserRepository } from '../../domain/data/userRepository.protocols';
+import { IUserRepository, UserFilter } from '../../domain/data/userRepository.protocols';
 import { MongooseHelper } from '../database/mongooseHelper';
 import { CreateUserDTO } from '../../domain/useCases/createUser.protocols';
 
@@ -13,9 +13,50 @@ export class UserRepository implements IUserRepository {
         return result;
     }
 
-    async findAll(): Promise<User[]> {
+    async findAllWithFilters(filter: UserFilter): Promise<User[]> {
+        const { term, country, createdAtStartPeriod, createdAtEndPeriod } = filter;
+
         await MongooseHelper.getConnection();
-        const result = await UserModel.find();
+        const query = {};
+
+        if (term) {
+            const termQuery = { 
+                $or: [{ 
+                    firstName: { $regex: term, $options: 'mis' } 
+                }, { 
+                    lastName: { $regex: term, $options: 'mis' } 
+                }, { 
+                    phoneNumber: { $regex: term, $options: 'mis' }  
+                }, { 
+                    email: { $regex: term, $options: 'mis' }  
+                }]
+            };
+            Object.assign(query, termQuery);
+        }
+
+        if (country) {
+            const countryQuery = { 'address.country': { $regex: country, $options: 'mis' } };
+            Object.assign(query, countryQuery);
+        }
+
+        if ((createdAtStartPeriod || createdAtEndPeriod) && (!createdAtStartPeriod || !createdAtEndPeriod)) {
+            const periodQuery = {
+                $or: [{ createdAt: createdAtStartPeriod }, { createdAt: createdAtEndPeriod }]
+            };
+            Object.assign(query, periodQuery);
+        } else if (createdAtStartPeriod && createdAtEndPeriod) {
+            const periodQuery = {
+                $and: [{ 
+                    createdAt: { $gt: new Date(createdAtStartPeriod) }
+                }, { 
+                    createdAt: { $lte: new Date(createdAtEndPeriod) } 
+                }]
+            };
+            Object.assign(query, periodQuery);
+        }
+
+        const result = await UserModel.find(query);
+
         return result;
     }
 
